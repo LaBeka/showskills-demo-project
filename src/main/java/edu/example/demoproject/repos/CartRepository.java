@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public class CartRepository extends BaseRepository<CartEntity> {
+public class CartRepository extends BaseRepository<CartEntity, Number> {
 
     public Optional<CartDto> getCart(Long id) {
         return em.createQuery("""

@@ -1,7 +1,8 @@
 package edu.example.demoproject.services;
 
+import edu.example.demoproject.contextHelpers.ImageMappingContext;
 import edu.example.demoproject.dtos.image.ImageDto;
-import edu.example.demoproject.entities.ImageEntity;
+import edu.example.demoproject.entities.image.ImageEntity;
 import edu.example.demoproject.exception.ImageUploadException;
 import edu.example.demoproject.mappers.ImageMapper;
 import edu.example.demoproject.repos.ImageRepository;
@@ -32,6 +33,7 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final ImageMapper imageMapper;
     private final MinioClient minioClient;
+    private final ImageMappingContext ctx;
 
     public List<ImageDto> getListPictureDtoOfProduct(Long productId) {
         return imageRepository.getImagesOfProduct(productId);
@@ -92,7 +94,7 @@ public class ImageService {
         imageRepository.persist(entity);
     }
 
-    public String uploadInBucket(MultipartFile image, Long productId) {
+    private String uploadInBucket(MultipartFile image, Long productId) {
         String bucketName = "product-" + productId + "-bucket";
         createBucket(bucketName);
         if(image.isEmpty() || image.getOriginalFilename() == null){

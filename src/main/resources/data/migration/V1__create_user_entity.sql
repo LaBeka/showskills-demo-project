@@ -1,4 +1,4 @@
-create table user_entity
+create table user_entities
 (
     user_id      bigserial PRIMARY KEY NOT NULL,
     full_name    varchar(128)          NOT NULL,

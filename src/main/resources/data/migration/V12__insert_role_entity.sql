@@ -1,4 +1,4 @@
-insert into role_entity
+insert into role_entities
     (role_name)
 values
 ('ROLE_ADMIN'),

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class ProductRepository extends BaseRepository<ProductEntity> {
+public class ProductRepository extends BaseRepository<ProductEntity, Number> {
 
     public ProductDto getFullInfoById(Long id) {
         return em.createQuery("""

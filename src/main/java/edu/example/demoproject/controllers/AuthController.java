@@ -4,7 +4,7 @@ import edu.example.demoproject.api.AuthApi;
 import edu.example.demoproject.dtos.auth.JwtRequest;
 import edu.example.demoproject.dtos.user.UserCreateDto;
 import edu.example.demoproject.dtos.user.UserDto;
-import edu.example.demoproject.entities.UserEntity;
+import edu.example.demoproject.entities.user.UserEntity;
 import edu.example.demoproject.services.AuthService;
 import edu.example.demoproject.services.UserService;
 import lombok.RequiredArgsConstructor;

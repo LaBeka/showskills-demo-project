@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @Getter
 @Entity
-@Table(name="item_entity")
+@Table(name="item_entities")
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

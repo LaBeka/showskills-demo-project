@@ -1,13 +1,12 @@
 package edu.example.demoproject.repos;
 
 import edu.example.demoproject.entities.RoleEntity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class RoleRepository extends BaseRepository<RoleEntity>{
+public class RoleRepository extends BaseRepository<RoleEntity, Number>{
 
     public List<RoleEntity> getRoles() {
         return em.createQuery("""

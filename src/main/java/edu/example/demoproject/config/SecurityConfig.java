@@ -25,14 +25,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   private final UserService userService;
-  private final JwtRequestFilter jwtRequestFilter;
+//  private final JwtRequestFilter jwtRequestFilter;
   private final PasswordEncoder passwordEncoder;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
             .authorizeHttpRequests((authz) -> authz
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/swagger-ui.html").permitAll()
@@ -47,8 +47,14 @@ public class SecurityConfig {
                     .anyRequest().authenticated()
             )
 
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-            .httpBasic(basic -> basic.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+//            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+//            .httpBasic(basic -> basic.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+            .httpBasic(basic -> basic.disable())
+            .formLogin(form -> form
+//                .loginPage("/")              // (optional) your custom login page
+                .defaultSuccessUrl("/api/products/main", true) // redirect here after login
+                .permitAll()
+            )
             .exceptionHandling(Customizer.withDefaults());
     return http.build();
   }

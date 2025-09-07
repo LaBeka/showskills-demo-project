@@ -19,6 +19,11 @@ public class ProductController implements ProductApi {
     final private ProductService productService;
 
     @Override
+    public String getMainPage() {
+        return "main";
+    }
+
+    @Override
     public ProductDto getFullInfoById(Long id) {
         return productService.getFullInfoById(id);
     }

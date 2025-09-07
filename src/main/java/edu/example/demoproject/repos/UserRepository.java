@@ -1,14 +1,13 @@
 package edu.example.demoproject.repos;
 
 import edu.example.demoproject.dtos.user.UserDto;
-import edu.example.demoproject.entities.UserEntity;
-import org.springframework.data.repository.CrudRepository;
+import edu.example.demoproject.entities.user.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public class UserRepository extends BaseRepository<UserEntity> {
+public class UserRepository extends BaseRepository<UserEntity, Number> {
 
     public Optional<UserDto> checkIfUserByEmailExists(String email) {
         return Optional.ofNullable(em.createQuery("""

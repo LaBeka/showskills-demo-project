@@ -31,7 +31,7 @@
                         <a class="nav-link" href="#">Brands</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">New products</a>
+                        <a class="nav-link" href="#">New products Beka</a>
                     </li>
 
                     <li class="nav-item mx-2">

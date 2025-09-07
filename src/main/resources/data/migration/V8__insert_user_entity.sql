@@ -1,4 +1,4 @@
-insert into user_entity
+insert into user_entities
 (full_name, account_name, email, password, enabled)
 values
     ('Anya fvnjdf', 'godzak', 'godanya@mail.com', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', true),

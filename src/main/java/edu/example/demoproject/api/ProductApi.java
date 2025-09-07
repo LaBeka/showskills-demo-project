@@ -22,6 +22,9 @@ import java.util.List;
 public interface ProductApi {
     String DICTS_API_PATH = "/api/products";
 
+    @GetMapping("/main")
+    public String getMainPage();
+
     @GetMapping("/info/{id}")
     @Operation(summary = "To get info about product")
     ProductDto getFullInfoById(@PathVariable Long id);

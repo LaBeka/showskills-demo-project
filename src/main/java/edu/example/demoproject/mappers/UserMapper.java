@@ -3,10 +3,9 @@ package edu.example.demoproject.mappers;
 import edu.example.demoproject.dtos.user.UserCreateDto;
 import edu.example.demoproject.dtos.user.UserDto;
 import edu.example.demoproject.entities.RoleEntity;
-import edu.example.demoproject.entities.UserEntity;
+import edu.example.demoproject.entities.user.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 

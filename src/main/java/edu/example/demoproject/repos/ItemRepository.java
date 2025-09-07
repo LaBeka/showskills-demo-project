@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ItemRepository extends BaseRepository<ItemEntity> {
+public class ItemRepository extends BaseRepository<ItemEntity, Number> {
 
     public List<ItemDto> getItemsByCartId(Long cartId) {
         return em.createQuery("""
