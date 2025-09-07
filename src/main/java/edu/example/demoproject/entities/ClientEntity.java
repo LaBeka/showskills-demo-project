@@ -12,14 +12,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Setter
 @Getter
+@Entity
 @Table(name="client_entities")
 public class ClientEntity {
 

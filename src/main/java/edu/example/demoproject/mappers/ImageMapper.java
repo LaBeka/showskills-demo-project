@@ -1,7 +1,5 @@
 package edu.example.demoproject.mappers;
 
-import static edu.example.demoproject.dtos.image.ImageType.*;
-
 import edu.example.demoproject.contextHelpers.ImageMappingContext;
 import edu.example.demoproject.dtos.image.ImageDto;
 import edu.example.demoproject.dtos.image.ImageType;
@@ -12,7 +10,6 @@ import edu.example.demoproject.entities.image.UserImage;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ObjectFactory;
 
@@ -60,10 +57,5 @@ public abstract class ImageMapper {
         }
         throw new IllegalArgumentException("Unknown ImageEntity subtype: " + e.getClass());
     }
-
-//    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "productId", target = "productId")
-//    @Mapping(source = "imageName", target = "imageName")
-//    ImageEntity buildEntity(Long id, Long productId, String imageName);
 
 }

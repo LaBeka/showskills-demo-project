@@ -5,13 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 @Entity
 @DiscriminatorValue("PRODUCT")
 public class ProductImage extends ImageEntity {
 
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id")
   private ProductEntity product;
 
 }

@@ -11,7 +11,7 @@ import lombok.*;
 public class UserImage extends ImageEntity {
 
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false)
+  @JoinColumn(name = "user_id")
   private UserEntity user;
 
 }

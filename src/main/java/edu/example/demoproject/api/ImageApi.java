@@ -18,43 +18,72 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @RequestMapping(edu.example.demoproject.api.ImageApi.DICTS_API_PATH)
-@Tag(name = "Methods to work with Picture entities", description = edu.example.demoproject.api.ImageApi.DICTS_API_PATH)
+@Tag(name = "Methods to work with images(product, user, client)", description = edu.example.demoproject.api.ImageApi.DICTS_API_PATH)
 @SecurityRequirement(name = "bearerAuth")
 public interface ImageApi {
     String DICTS_API_PATH = "/api/images";
 
-    @PostMapping(value = "/add/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "To add new picture of product by product id")
+    @PostMapping(value = "/addProductImage/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Add/Update product image")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    void createImage(
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    ResponseEntity uploadOrUpdateProductImage(
             @Valid @RequestPart("file") MultipartFile file,
             @PathVariable Long productId
     ) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
 
-    @GetMapping("/readFile/{id}")
-    @Operation(summary = "To show picture by id of picture entity")
-    ResponseEntity showImageByItsId(@PathVariable Long id) throws IOException;
 
-
-    @DeleteMapping("/delete/{id}")
-    @Operation(summary = "To delete picture of product by id of picture")
+    @PostMapping(value = "/addUserImage/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Add/Update user image")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    void delete(@PathVariable Long id);
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    ResponseEntity uploadOrUpdateUserImage(
+        @Valid @RequestPart("file") MultipartFile file,
+        @PathVariable Long userId
+    ) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
 
 
-    @PutMapping("/update/{id}")
-    @Operation(summary = "To update picture by its id")
+    @PostMapping(value = "/addClientImage/{clientId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Add/Update client image")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    void updatePicProductInfo(
-            @Valid @RequestPart("file")MultipartFile file,
-            @PathVariable Long id) throws IOException;
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+    ResponseEntity uploadOrUpdateClientImage(
+        @Valid @RequestPart("file") MultipartFile file,
+        @PathVariable Long clientId
+    ) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
 
+
+    @GetMapping("/getImageProduct/{productId}")
+    @Operation(summary = "Get product image by product id")
+    ResponseEntity getProductImage(@PathVariable Long productId) throws IOException;
+
+    @GetMapping("/getImageClient/{clientId}")
+    @Operation(summary = "Get client image by client id")
+    ResponseEntity getClientImage(@PathVariable Long clientId) throws IOException;
+
+    @GetMapping("/getImageUser/{userId}")
+    @Operation(summary = "Get user image by user id")
+    ResponseEntity getUserImage(@PathVariable Long userId) throws IOException;
 
     @GetMapping("/getListImages/{productId}")
     @Operation(summary = "To get list of pictures by id of product")
     ResponseEntity getListImages(@PathVariable Long productId) throws IOException;
+
+//    @DeleteMapping("/delete/{id}")
+//    @Operation(summary = "To delete picture of product by id of picture")
+//    @ResponseStatus(HttpStatus.OK)
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+
+//    void delete(@PathVariable Long id);
+//
+//    @PutMapping("/update/{id}")
+//    @Operation(summary = "To update picture by its id")
+//    @ResponseStatus(HttpStatus.OK)
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+//    ResponseEntity updateProductImage(
+//            @Valid @RequestPart("file")MultipartFile file,
+
+//            @PathVariable Long id) throws IOException;
+
 
 }

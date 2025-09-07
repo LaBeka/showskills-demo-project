@@ -5,16 +5,13 @@ import java.time.Instant;
 import lombok.*;
 
 @Entity
-@Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter @Getter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "image_type", length = 16) // PRODUCT / USER / CLIENT
 @Table(name="image_entities")
 public abstract class ImageEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     private Long id;
 

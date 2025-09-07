@@ -19,6 +19,11 @@ import java.util.Map;
 @Repository
 public class ProductRepository extends BaseRepository<ProductEntity, Number> {
 
+
+    public ProductEntity getReferenceById(Long id) {
+        return findById(ProductEntity.class, id);
+    }
+
     public ProductDto getFullInfoById(Long id) {
         return em.createQuery("""
                               select new edu.example.demoproject.dtos.product.ProductDto(

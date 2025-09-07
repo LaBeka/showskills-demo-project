@@ -11,6 +11,6 @@ import lombok.*;
 public class ClientImage extends ImageEntity {
 
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_id", nullable = false)
+  @JoinColumn(name = "client_id")
   private ClientEntity client;
 }

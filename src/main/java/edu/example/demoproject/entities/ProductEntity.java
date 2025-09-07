@@ -3,12 +3,12 @@ package edu.example.demoproject.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
 @Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Setter
 @Getter
+@Entity
 @Table(name="product_entities")
 public class ProductEntity {
     @Id

@@ -2,15 +2,12 @@ package edu.example.demoproject.controllers;
 
 import edu.example.demoproject.api.ImageApi;
 import edu.example.demoproject.services.ImageService;
-import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 
 @Controller
@@ -19,23 +16,36 @@ public class ImageController implements ImageApi {
     private final ImageService service;
 
     @Override
-    public void createImage(MultipartFile file, Long productId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        service.uploadImage(file, productId);
+    public ResponseEntity getProductImage(Long productId) throws IOException {
+        return service.productImageByItsId(productId);
     }
 
     @Override
-    public ResponseEntity showImageByItsId(Long id) throws IOException {
-        return service.getPictureByItsId(id);
+    public ResponseEntity getUserImage(Long userId) throws IOException {
+        return service.userImageByItsId(userId);
     }
 
     @Override
-    public void delete(Long id) {
-        service.delete(id);
+    public ResponseEntity getClientImage(Long clientId) throws IOException {
+        return service.clientImageByItsId(clientId);
     }
 
     @Override
-    public void updatePicProductInfo(MultipartFile file, Long id) throws IOException {
-        service.update(file, id);
+    public ResponseEntity uploadOrUpdateProductImage(MultipartFile file, Long productId) {
+        service.updateUploadProductImage(file, productId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity uploadOrUpdateUserImage(MultipartFile file, Long userId){
+        service.updateUploadUserImage(file, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity uploadOrUpdateClientImage(MultipartFile file, Long clientId){
+        service.updateUploadClientImage(file, clientId);
+        return ResponseEntity.ok().build();
     }
 
     @Override

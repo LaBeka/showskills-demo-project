@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(AuthApi.DICTS_API_PATH)
-@Tag(name = "Методы для работы с авторизацией", description = AuthApi.DICTS_API_PATH)
+@Tag(name = "Methods to work with authentication", description = AuthApi.DICTS_API_PATH)
 public interface AuthApi {
     String DICTS_API_PATH = "/api/auth";
 
