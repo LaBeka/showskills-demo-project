@@ -63,7 +63,7 @@ public class ImageRepository extends BaseRepository<ImageEntity, Long>{
 
     public List<ClientImage> findByClientId(Long clientId) {
         List<ClientImage> clientId1 = em.createQuery(
-                "SELECT i FROM ClientImage i WHERE i.client.id = :clientId",
+                "SELECT c FROM ClientImage c WHERE c.client.id = :clientId",
                 ClientImage.class)
             .setParameter("clientId", clientId)
             .getResultList();
