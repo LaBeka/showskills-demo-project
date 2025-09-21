@@ -44,8 +44,7 @@ public class ImageController implements ImageApi {
 
     @Override
     public ResponseEntity uploadOrUpdateClientImage(MultipartFile file, Long clientId){
-        service.updateUploadClientImage(file, clientId);
-        return ResponseEntity.ok().build();
+        return service.updateUploadClientImage(file, clientId);
     }
 
     @Override

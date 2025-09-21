@@ -18,11 +18,13 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 import io.minio.*;
 import io.minio.errors.*;
 import java.util.Optional;
+import javax.swing.text.html.Option;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -103,32 +105,34 @@ public class ImageService {
 
     @SneakyThrows
     @Transactional
-    public void updateUploadClientImage(MultipartFile newFile, Long clientId)  {
+    public ResponseEntity updateUploadClientImage(MultipartFile newFile, Long clientId)  {
         // find an existing
         List<ClientImage> existingImages = imageRepository.findByClientId(clientId);
         String bucketName = "client-" + clientId + "-bucket";
 
+        ImageEntity result = new ClientImage();
         if (!existingImages.isEmpty()) {
-            // update the last added picture of client
-            ClientImage existing = existingImages.get(existingImages.size() - 1);
-
-            // delete old object from MinIO
-            deleteObjectInBucket(bucketName, existing.getImageName());
-
-            // upload new object
+            //1 if there is already an image get that image, delete it bucket
+            result = existingImages.get(0);
+            deleteObjectInBucket(bucketName, result.getImageName());
+            //2 create a new name with new content of MultipartFile & upload it into bucket
             String newName = uploadInBucket(newFile, bucketName);
-
-            // update entity
-            existing.setImageName(newName);
-            imageRepository.merge(existing);
+            // 3 update db with new name
+            result.setImageName(newName);
+            imageRepository.persist(result);
         } else {
-            // no image yet → create new one
+            // no image yet → create new one & save in storage bucket
             // clientImage entity is empty needs to be solved the problem
             String fileName = uploadInBucket(newFile, bucketName);
+
+            boolean imageCreated = checkExistenceInStorage(bucketName, newFile);
+            if(!imageCreated) return ResponseEntity.noContent().build();
+
             ImageDto dto = new ImageDto(null, fileName, ImageType.CLIENT, clientId);
-            ImageEntity entity = imageMapper.toEntity(dto, ctx);
-            imageRepository.persist(entity);
+            result = imageMapper.toEntity(dto, ctx);
+            imageRepository.persist(result);
         }
+        return ResponseEntity.ok().body(result);
     }
     private String uploadInBucket(MultipartFile image, String bucketName) {
         createBucket(bucketName);
@@ -201,11 +205,16 @@ public class ImageService {
 
     @SneakyThrows
     public ResponseEntity clientImageByItsId(Long id) {
-        Optional<ClientImage> entity = imageRepository.findClientImageById(id);
-        if (entity.isEmpty()) return ResponseEntity.notFound().build();
+        List<ClientImage> existingImages = imageRepository.findClientImageById(id);
+        if (existingImages.isEmpty()) return ResponseEntity.notFound().build();
+
+        Optional<ClientImage> latestImage = Optional.of(existingImages.stream()
+            .max(Comparator.comparing(ClientImage::getCreatedAt))
+            .orElse(null)); // returns null if list is empty
+        if(latestImage.isEmpty()) return ResponseEntity.notFound().build();
 
         String bucketName = "client-" + id + "-bucket";
-        return generateResponseImageEntity(entity.get(), bucketName);
+        return generateResponseImageEntity(latestImage.get(), bucketName);
     }
 
     @NotNull
@@ -224,5 +233,36 @@ public class ImageService {
             .contentLength(bytes.length)
             .contentType(MediaType.parseMediaType(extension))
             .body(new InputStreamResource(new ByteArrayInputStream(bytes)));
+    }
+
+    private boolean checkExistence(String bucketName, MultipartFile image, Long clientId){
+        //check image exists in db
+        Optional<ClientImage> existsInDB = imageRepository.existsByImageNameAndClientId(image.getOriginalFilename(), clientId);
+        if (existsInDB.isPresent()) return true;
+
+        //check image exists in minio storage
+        return checkExistenceInStorage(bucketName, image);
+    }
+    private boolean checkExistenceInStorage(String bucketName, MultipartFile image){
+        try {
+            minioClient.statObject(
+                StatObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(image.getOriginalFilename())
+                    .build()
+            );
+            return true;
+        } catch (ErrorResponseException e) {
+            //object does not exist in minio storage
+            if ("NoSuchKey".equals(e.errorResponse().code())) {
+                return false;
+            } else {
+                throw new RuntimeException("Error occurred while checking object existence", e);
+            }
+        } catch (InsufficientDataException | InternalException | InvalidKeyException |
+                 InvalidResponseException | ServerException | XmlParserException |
+                 IOException | NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error occurred while checking object existence", e);
+        }
     }
 }

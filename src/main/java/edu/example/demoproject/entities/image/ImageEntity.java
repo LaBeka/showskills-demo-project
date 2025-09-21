@@ -26,4 +26,6 @@ public abstract class ImageEntity {
 
     @Column(name = "object_key", length = 512) // e.g., MinIO key
     protected String objectKey;
+
+
 }

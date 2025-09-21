@@ -50,7 +50,7 @@ public class ImageRepository extends BaseRepository<ImageEntity, Long>{
             .getResultList();
     }
 
-    public Optional<ClientImage> findClientImageById(Long id) {
+    public List<ClientImage> findClientImageById(Long id) {
         return em.createQuery(
                 "select c from ClientImage c " +
                     "where c.client.id = :cid " +
@@ -58,7 +58,7 @@ public class ImageRepository extends BaseRepository<ImageEntity, Long>{
             .setParameter("cid", id)
             .setMaxResults(1)
             .getResultStream()
-            .findFirst();
+            .toList();
     }
 
     public List<ClientImage> findByClientId(Long clientId) {
@@ -77,5 +77,17 @@ public class ImageRepository extends BaseRepository<ImageEntity, Long>{
     public void deleteById(Long id) {
         var managed = findAnyById(id);
         if (managed != null) em.remove(managed);
+    }
+
+    public Optional<ClientImage> existsByImageNameAndClientId(String originalFilename, Long clientId) {
+        return em.createQuery(
+                "select c from ClientImage c " +
+                    "where c.client.id = :cid " +
+                    "and c.imageName = :cname", ClientImage.class)
+            .setParameter("cid", clientId)
+            .setParameter("cname", originalFilename)
+            .setMaxResults(1)
+            .getResultStream()
+            .findFirst();
     }
 }
